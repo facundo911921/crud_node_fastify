@@ -1,7 +1,6 @@
 // Projeto de API com Node.js, Fastify e Postgress para sistema de vídeos.
 
 import { fastify } from 'fastify'
-// import { DatabaseMemory } from './database-memory.js';
 import { DatabasePostgres } from './database-postgres.js';
 
 
@@ -14,7 +13,7 @@ const database = new DatabasePostgres();
 server.post('/videos', async (request, reply) => {
     const {title, description, duration} = request.body;
 
-    // Shot sintax. Pode ser usado quando o nome do atributo é igual o nome da variável
+    // Short sintax. Pode ser usado quando o nome do atributo é igual o nome da variável
     await database.create({
         title,
         description, 

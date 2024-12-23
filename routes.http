@@ -1,15 +1,15 @@
-POST http://localhost:3333/videos
+POST https://crud-node-fastify.onrender.com/videos
 Content-Type: application/json
 
 {
-    "title": "Teste novo repositório",
-    "description": "Teste novo repositório",
+    "title": "Test Deploy",
+    "description": "Test deply on Render",
     "duration": 10
 }
 
 ###
 
-GET http://localhost:3333/videos
+GET https://crud-node-fastify.onrender.com/videos
 
 ###
 
