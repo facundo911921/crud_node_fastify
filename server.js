@@ -1,18 +1,21 @@
 // Projeto de API com Node.js, Fastify e Postgress para sistema de vídeos.
 
 import { fastify } from 'fastify'
-import { DatabaseMemory } from './database-memory.js';
+// import { DatabaseMemory } from './database-memory.js';
+import { DatabasePostgres } from './database-postgres.js';
+
 
 const server = fastify();
 
-const database = new DatabaseMemory();
+// const database = new DatabaseMemory();
+const database = new DatabasePostgres();
 
 // reply é a mesma coisa do response, pode até ser chamado igual
-server.post('/videos', (request, reply) => {
+server.post('/videos', async (request, reply) => {
     const {title, description, duration} = request.body;
 
     // Shot sintax. Pode ser usado quando o nome do atributo é igual o nome da variável
-    database.create({
+    await database.create({
         title,
         description, 
         duration
@@ -21,21 +24,21 @@ server.post('/videos', (request, reply) => {
     return reply.status(201).send();
 })
 
-server.get('/videos', (request, reply) => {
+server.get('/videos', async (request, reply) => {
     const search = request.query.search;
 
-    const videos = database.list(search);
+    const videos = await database.list(search);
 
     // Para o caso de só retornar algo, não é necessário usar request, reply. O status code, por padrão é 200 quando é um envio de resposta.
     // Retornar um Array
     return videos;
 })
 
-server.put('/videos/:id', (request, reply) => {
+server.put('/videos/:id', async (request, reply) => {
     const videoID = request.params.id;
     const {title, description, duration} = request.body;
 
-    database.update(videoID, {
+    await database.update(videoID, {
         title,
         description,
         duration
@@ -46,10 +49,10 @@ server.put('/videos/:id', (request, reply) => {
 
 })
 
-server.delete('/videos/:id', (request, reply) => {
+server.delete('/videos/:id', async (request, reply) => {
     const videoID = request.params.id;
 
-    database.delete(videoID);
+    await database.delete(videoID);
 
     return reply.status(204).send();
 })
